@@ -1,38 +1,58 @@
-(function () {
-    const controls = document.querySelectorAll(".control");
-
-    controls.forEach(button => {
-        button.addEventListener("click", function() {
-            // Supprimer la classe "active-btn" de tous les boutons
-            document.querySelectorAll(".active-btn").forEach(btn => btn.classList.remove("active-btn"));
-
-            // Supprimer la classe "active-page" de tous les textes de boutons
-            document.querySelectorAll(".btn-text").forEach(text => text.classList.remove("active-page"));
-
-            // Ajouter la classe "active-btn" au bouton actuellement cliqué
-            this.classList.add("active-btn");
-
-            // Ajouter la classe "active-page" au texte du bouton actuellement cliqué
-            this.querySelector('.btn-text').classList.add("active-page");
-
-            // Retirer la classe "active" de tous les éléments associés aux boutons
-            document.querySelectorAll(".active").forEach(active => active.classList.remove("active"));
-
-            // Ajouter la classe "active" à l'élément associé au bouton cliqué
-            document.getElementById(button.dataset.id).classList.add("active");
-        });
-
-        // Vérifier si le bouton est déjà actif au chargement de la page
-        if (button.classList.contains("active-btn")) {
-            const associatedContent = document.getElementById(button.dataset.id);
-            if (associatedContent) {
-                associatedContent.classList.add("active");
-                button.querySelector('.btn-text').classList.add("active-page");
-            }
-        }
+// Fonction pour afficher le contenu spécifique et souligner le lien actif
+function showContent(sectionId) {
+    // Masquer tous les contenus
+    const sections = document.querySelectorAll('.container');
+    sections.forEach(section => {
+        section.style.display = 'none';
     });
 
-    document.querySelector(".theme-btn").addEventListener("click", () => {
-        document.body.classList.toggle("light-mode");
+    // Afficher le contenu spécifique correspondant au bouton cliqué
+    const selectedSection = document.getElementById(sectionId);
+    if (selectedSection) {
+        selectedSection.style.display = 'block';
+    }
+
+    // Définir le lien actif et le souligner
+    const navLinks = document.querySelectorAll('.nav-link');
+    navLinks.forEach(link => {
+        link.classList.remove('active');
     });
-})();
+
+    const activeLink = document.getElementById(sectionId + '-link');
+    if (activeLink) {
+        activeLink.classList.add('active');
+    }
+}
+
+// Affichage de la page d'accueil au chargement initial
+window.addEventListener('load', function() {
+    showContent('accueil');
+});
+
+
+
+// Écouteurs d'événements pour les liens de navigation
+document.getElementById('accueil-link').addEventListener('click', function(event) {
+    event.preventDefault();
+    showContent('accueil');
+});
+
+document.getElementById('a-propos-link').addEventListener('click', function(event) {
+    event.preventDefault();
+    showContent('a-propos');
+});
+
+document.getElementById('experience-link').addEventListener('click', function(event) {
+    event.preventDefault();
+    showContent('experience');
+});
+
+document.getElementById('mobilite-link').addEventListener('click', function(event) {
+    event.preventDefault();
+    showContent('mobilite');
+});
+
+document.getElementById('CV-link').addEventListener('click', function(event) {
+    event.preventDefault();
+    showContent('cv');
+});
